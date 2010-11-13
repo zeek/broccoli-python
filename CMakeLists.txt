@@ -54,10 +54,16 @@ install(CODE
     "execute_process(COMMAND ${PYTHON_EXECUTABLE} -c \"${compileArg}\"
                      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})"
 )
+
+if (NOT PY_MOD_INSTALL_DIR)
+    # the configure wrapper was not used, default to "home" style installation
+    set(PY_MOD_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/lib/python)
+endif ()
+
 install(FILES broccoli.py ${CMAKE_CURRENT_BINARY_DIR}/broccoli.pyc
-        DESTINATION ${CMAKE_INSTALL_PREFIX})
+        DESTINATION ${PY_MOD_INSTALL_DIR})
 install(TARGETS ${SWIG_MODULE_broccoli_intern_REAL_NAME}
-        DESTINATION ${CMAKE_INSTALL_PREFIX})
+        DESTINATION ${PY_MOD_INSTALL_DIR})
 
 ########################################################################
 ## Build Summary
@@ -69,7 +75,7 @@ endif ()
 message(
     "\n================|  PyBroccoli Build Summary  |=================="
     "\n"
-    "\nInstall prefix:    ${CMAKE_INSTALL_PREFIX}"
+    "\nInstall dir:       ${PY_MOD_INSTALL_DIR}"
     "\nDebug mode:        ${ENABLE_DEBUG}"
     "\nRelease mode:      ${ENABLE_RELEASE}"
     "\n"
