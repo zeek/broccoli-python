@@ -31,8 +31,7 @@ Usage: $0 [OPTION]... [VAR=VALUE]...
     --home=PATH            installs to [PATH/lib/python]
 
   Optional Features:
-    --enable-debug         compile with debugging symbols
-    --enable-release       compile with optimizations
+    --enable-debug         compile in debugging mode
 
   Required Packages in Non-Standard Locations:
     --with-broccoli=PATH   path to Broccoli install root
@@ -64,7 +63,6 @@ builddir=build
 CMakeCacheEntries=""
 append_cache_entry PY_MOD_INSTALL_DIR   PATH     $site_packages
 append_cache_entry ENABLE_DEBUG         BOOL     false
-append_cache_entry ENABLE_RELEASE       BOOL     false
 
 # parse arguments
 while [ $# -ne 0 ]; do
@@ -89,9 +87,6 @@ while [ $# -ne 0 ]; do
             ;;
         --enable-debug)
             append_cache_entry ENABLE_DEBUG         BOOL   true
-            ;;
-        --enable-release)
-            append_cache_entry ENABLE_RELEASE       BOOL   true
             ;;
         --with-broccoli=*)
             append_cache_entry Broccoli_ROOT_DIR PATH $optarg

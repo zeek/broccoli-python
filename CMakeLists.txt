@@ -17,12 +17,25 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 project(PyBroccoli)
 
-if (ENABLE_DEBUG AND ENABLE_RELEASE)
-    set(CMAKE_BUILD_TYPE RelWithDebInfo)
-elseif (ENABLE_DEBUG AND NOT ENABLE_RELEASE)
+if (ENABLE_DEBUG)
     set(CMAKE_BUILD_TYPE Debug)
-elseif (NOT ENABLE_DEBUG AND ENABLE_RELEASE)
-    set(CMAKE_BUILD_TYPE Release)
+else ()
+    set(CMAKE_BUILD_TYPE RelWithDebInfo)
+endif ()
+
+# don't set extra compile flags again if already declared in this scope
+# (i.e. this project is included from Bro)
+if (NOT EXTRA_COMPILE_FLAGS)
+    set(EXTRA_COMPILE_FLAGS "-Wall -Wno-unused")
+
+    if (ENABLE_DEBUG)
+        set(EXTRA_COMPILE_FLAGS "${EXTRA_COMPILE_FLAGS} -DDEBUG")
+    endif ()
+
+    # Compiler flags may already exist in CMake cache (e.g. when specifying
+    # CFLAGS environment variable before running cmake for the the first time)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_COMPILE_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EXTRA_COMPILE_FLAGS}")
 endif ()
 
 ########################################################################
@@ -87,7 +100,6 @@ message(
     "\n"
     "\nInstall dir:       ${PY_MOD_INSTALL_DIR}"
     "\nDebug mode:        ${ENABLE_DEBUG}"
-    "\nRelease mode:      ${ENABLE_RELEASE}"
     "\n"
     "\nCC:                ${CMAKE_C_COMPILER}"
     "\nCFLAGS:            ${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_${BuildType}}"
