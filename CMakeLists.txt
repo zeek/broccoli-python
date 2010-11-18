@@ -28,10 +28,20 @@ endif ()
 ########################################################################
 ## Dependency Configuration
 
-find_package(Broccoli REQUIRED)
-find_package(SWIG REQUIRED)
-find_package(PythonLibs REQUIRED)
-find_package(PythonInterp REQUIRED)
+include(FindRequiredPackage)
+
+FindRequiredPackage(Broccoli)
+FindRequiredPackage(SWIG)
+FindRequiredPackage(PythonLibs)
+FindRequiredPackage(PythonInterp)
+
+if (MISSING_PREREQS)
+    foreach (prereq ${MISSING_PREREQ_DESCS})
+        message(SEND_ERROR ${prereq})
+    endforeach ()
+    message(FATAL_ERROR "Configuration aborted due to missing prerequisites")
+endif ()
+
 include_directories(BEFORE ${Broccoli_INCLUDE_DIR}
                            ${PYTHON_INCLUDE_DIR}
 )

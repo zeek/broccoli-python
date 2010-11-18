@@ -13,7 +13,7 @@
 #
 # Variables defined by this module:
 #
-#  Broccoli_FOUND            System has libbroccoli, include and lib dirs found
+#  BROCCOLI_FOUND            System has libbroccoli, include and lib dirs found
 #  Broccoli_INCLUDE_DIR      The libbroccoli include directories. 
 #  Broccoli_LIBRARY          The libbroccoli library.
 
