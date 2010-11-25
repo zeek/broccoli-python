@@ -14,12 +14,12 @@ Download
 --------
 
 Since Bro 1.4, a stable version of the Python module ships as part
-of the Bro distribution in +aux/broccoli/bindings/python+. 
+of the Bro distribution in +aux/broccoli/bindings/broccoli-python+. 
 
-The most current development version is part of the Bro Subversion
-repository. To get it, use:
+The most current development version is in a Git repository.  To
+get it, use:
 
-   > svn checkout http://svn.icir.org/bro/trunk/bro/aux/broccoli/bindings/python
+   > git clone -b devel git://git.icir.org/broccoli-python
 
 Installation
 ------------
@@ -35,7 +35,6 @@ Try the following to test the installation. If you do not see any
 error message, everything should be fine:
 
     > python -c "import broccoli"
-    > 
 
 Usage
 -----
