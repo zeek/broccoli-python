@@ -6,10 +6,10 @@ import sys
 from distutils.core import setup, Extension
 
 setup(name="pybroccoli", 
-    version="0.1",
+    version="0.2",
     author="Robin Sommer",
     author_email="robin@icir.org",
-    license="GPL",
+    license="BSD",
     url="http://www.icir.org/robin/pybroccoli",
     py_modules=['broccoli'],
     ext_modules = [ 
