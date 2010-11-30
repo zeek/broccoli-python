@@ -1,0 +1,3 @@
+0.2
+    - Repository switched to git, and README converted to reSt.
+    - License changed to BSD-style. 
