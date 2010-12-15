@@ -89,7 +89,7 @@ swig_link_libraries(broccoli_intern ${Broccoli_LIBRARY} ${PYTHON_LIBRARIES})
 configure_file(broccoli.py ${CMAKE_CURRENT_BINARY_DIR}/broccoli.py COPYONLY)
 set(compileArg "import py_compile; py_compile.compile('broccoli.py')")
 install(CODE
-    "execute_process(COMMAND ${PYTHON_EXECUTABLE} -c \"${compileArg}\"
+    "execute_process(COMMAND \"${PYTHON_EXECUTABLE}\" -c \"${compileArg}\"
                      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})"
 )
 
