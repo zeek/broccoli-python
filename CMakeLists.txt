@@ -87,7 +87,7 @@ swig_link_libraries(broccoli_intern ${Broccoli_LIBRARY} ${PYTHON_LIBRARIES})
 
 if (NOT PY_MOD_INSTALL_DIR)
     # the configure wrapper was not used, default to "home" style installation
-    set(PY_MOD_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/lib/python)
+    set(PY_MOD_INSTALL_DIR lib/python)
 endif ()
 
 install(FILES broccoli.py
