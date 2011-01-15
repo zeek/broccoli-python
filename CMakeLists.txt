@@ -85,20 +85,12 @@ swig_link_libraries(broccoli_intern ${Broccoli_LIBRARY} ${PYTHON_LIBRARIES})
 ########################################################################
 ## Install Files
 
-# create the byte-compiled module for installation
-configure_file(broccoli.py ${CMAKE_CURRENT_BINARY_DIR}/broccoli.py COPYONLY)
-set(compileArg "import py_compile; py_compile.compile('broccoli.py')")
-install(CODE
-    "execute_process(COMMAND \"${PYTHON_EXECUTABLE}\" -c \"${compileArg}\"
-                     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})"
-)
-
 if (NOT PY_MOD_INSTALL_DIR)
     # the configure wrapper was not used, default to "home" style installation
-    set(PY_MOD_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/lib/python)
+    set(PY_MOD_INSTALL_DIR lib/python)
 endif ()
 
-install(FILES broccoli.py ${CMAKE_CURRENT_BINARY_DIR}/broccoli.pyc
+install(FILES broccoli.py
         DESTINATION ${PY_MOD_INSTALL_DIR})
 install(TARGETS ${SWIG_MODULE_broccoli_intern_REAL_NAME}
         DESTINATION ${PY_MOD_INSTALL_DIR})
@@ -124,3 +116,17 @@ message(
     "\n"
     "\n================================================================\n"
 )
+
+########################################################################
+## Show warning when installing user is different from the one that configured
+
+install(CODE "
+    if (NOT $ENV{USER} STREQUAL \$ENV{USER})
+        message(STATUS \"ATTENTION: Install is being performed by user \"
+                \"'\$ENV{USER}', but the build directory was configured by \"
+                \"user '$ENV{USER}'. This may result in a permissions error \"
+                \"when writing the install manifest, but you can ignore it \"
+                \"and consider the installation as successful if you don't \"
+                \"care about the install manifest.\")
+    endif ()
+")
