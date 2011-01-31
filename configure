@@ -37,6 +37,10 @@ Usage: $0 [OPTION]... [VAR=VALUE]...
 
   Required Packages in Non-Standard Locations:
     --with-broccoli=PATH   path to Broccoli install root
+    --with-python=PATH     path to Python interpreter
+    --with-python-lib=PATH path to libpython
+    --with-python-inc=PATH path to Python headers
+    --with-swig=PATH       path to SWIG executable
 
   Influential Environment Variables (only on first invocation
   per build directory):
@@ -88,7 +92,20 @@ while [ $# -ne 0 ]; do
             append_cache_entry ENABLE_DEBUG         BOOL   true
             ;;
         --with-broccoli=*)
-            append_cache_entry Broccoli_ROOT_DIR PATH $optarg
+            append_cache_entry Broccoli_ROOT_DIR    PATH    $optarg
+            ;;
+        --with-python=*)
+            append_cache_entry PYTHON_EXECUTABLE    PATH    $optarg
+            ;;
+        --with-python-lib=*)
+            append_cache_entry PYTHON_LIBRARY       PATH    $optarg
+            ;;
+        --with-python-inc=*)
+            append_cache_entry PYTHON_INCLUDE_DIR   PATH    $optarg
+            append_cache_entry PYTHON_INCLUDE_PATH  PATH    $optarg
+            ;;
+        --with-swig=*)
+            append_cache_entry SWIG_EXECUTABLE      PATH    $optarg
             ;;
         *)
             echo "Invalid option '$1'.  Try $0 --help to see available options."
