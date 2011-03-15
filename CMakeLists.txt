@@ -1,4 +1,8 @@
-project(PyBroccoli)
+project(PyBroccoli C)
+
+if (NOT CMAKE_C_COMPILER)
+    message(FATAL_ERROR "Could not find prerequisite C compiler")
+endif ()
 
 ########################################################################
 ## CMake Configuration
@@ -111,9 +115,7 @@ message(
     "\n"
     "\nCC:                ${CMAKE_C_COMPILER}"
     "\nCFLAGS:            ${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_${BuildType}}"
-    "\nCXX:               ${CMAKE_CXX_COMPILER}"
-    "\nCXXFLAGS:          ${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${BuildType}}"
-    "\nCPP:               ${CMAKE_CXX_COMPILER}"
+    "\nCPP:               ${CMAKE_C_COMPILER}"
     "\n"
     "\n================================================================\n"
 )
