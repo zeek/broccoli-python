@@ -69,7 +69,7 @@ execute_process(COMMAND ${PYTHON_EXECUTABLE}-config --prefix
                 )
 
 if ( PYTHON_PREFIX )
-    set(CMAKE_LIBRARY_PATH ${PYTHON_PREFIX}/lib ${PYTHON_PREFIX}/lib ${CMAKE_LIBRARY_PATH})
+    set(CMAKE_LIBRARY_PATH ${PYTHON_PREFIX}/lib64 ${PYTHON_PREFIX}/lib ${CMAKE_LIBRARY_PATH})
 endif ()
 
 FindRequiredPackage(PythonLibs)
