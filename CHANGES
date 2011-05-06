@@ -1,3 +1,7 @@
+0.2-1 | 2011-05-05 20:42:47 -0700
+
+  * Adapting CMake's search paths based on output of python-config. (Robin Sommer)
+
 0.2
     - Repository switched to git, and README converted to reSt.
     - License changed to BSD-style. 
