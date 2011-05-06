@@ -1,4 +1,6 @@
-0.2-1 | 2011-05-05 20:42:47 -0700
+0.3 | 2011-05-05 20:42:47 -0700
+
+  * CMake build system. (Jon Siwek). 
 
   * Adapting CMake's search paths based on output of python-config. (Robin Sommer)
 
