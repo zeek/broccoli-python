@@ -47,6 +47,7 @@ global test4: event(r: rec);
 event test3(r: rec)
 {
     print "==== record";
+    print r;
     print r$a, r$b;
     event test4(r);
     
