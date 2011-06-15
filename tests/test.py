@@ -38,6 +38,7 @@ def test2b(a,b,c,d,e,f,g,h,i,j,k):
     print repr(j), k
     
 rec = record_type("a", "b")    
+other_rec = record_type("a")
     
 @event(rec)    
 def test4(r):

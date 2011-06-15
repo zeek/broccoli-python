@@ -285,18 +285,11 @@ class unknown(Val):
     def __init__(self):
         Val.__init__(self, BRO_TYPE_UNKNOWN, None)
 
-# Dictionary of all defined record types.
-RecTypes = {}
-
 # Type class for records, which maps field names to indices.
 # E.g., conn_id = record_type("orig_h", "orig_p", "resp_h", "resp_p")
 class record_type:
     def __init__(self, *fields):
         self.fields = fields
-
-	global RecTypes
-        # Remember this type by its name.
-	RecTypes[self.__class__.__name__] = self
 
     @classmethod
     def _factory(self, vals, dst_type):
@@ -304,13 +297,10 @@ class record_type:
         # FIXME: For recursive records we'd need to pass the right record type
         # here instead of none, which we don't have. How to do that?
 
-        # Get the type.
-        rec_type = RecTypes[dst_type.__class__.__name__]
-
         # Init the field values.
         vals = [instantiate(btype, val, None) for (btype, val) in vals]
 
-	return record(rec_type, vals)
+	return record(dst_type, vals)
 
 # Class for record instances.
 class record(Val):
