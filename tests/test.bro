@@ -3,7 +3,7 @@
 redef listen_port_clear    = 47758/tcp;
 
 redef Remote::destinations += {
-	["broping"] = [$host = 127.0.0.1, $events = /test1|test3/, $connect=F, $ssl=F]
+	["broping"] = [$host = 127.0.0.1, $events = /test1|test3|test5/, $connect=F, $ssl=F]
 };
 
 
@@ -55,4 +55,19 @@ event test3(r: rec)
     r2$a = 99;
     r2$b = 3.4.5.1;
     event test4(r2);
+}
+
+type opt_rec: record {
+    a: int &optional;
+    b: addr &optional;
+    c: string &optional;
+};
+
+event test5(r: opt_rec)
+{
+    print "==== coerced record";
+    print r;
+    if ( r?$a ) print r$a;
+    if ( r?$b ) print r$b;
+    if ( r?$c ) print r$c;
 }
