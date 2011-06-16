@@ -321,7 +321,9 @@ class record(Val):
     def internalVal(self):
         vals = []
         for f in self._type.fields:
-            vals.append( (f, _getInternalVal(self.val.get(f, unknown()))) )
+            v = self.val.get(f, None)
+            if v != None:
+                vals.append( (f, _getInternalVal(v)) )
         return (BRO_TYPE_RECORD, vals)
 
     # Provide attribute access via "val.attr".

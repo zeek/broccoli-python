@@ -58,16 +58,20 @@ event test3(r: rec)
 }
 
 type opt_rec: record {
+    one: int &optional;
     a: int &optional;
     b: addr &optional;
     c: string &optional;
+    d: string &optional;
 };
 
 event test5(r: opt_rec)
 {
     print "==== coerced record";
     print r;
+    if ( r?$one ) print r$one;
     if ( r?$a ) print r$a;
     if ( r?$b ) print r$b;
     if ( r?$c ) print r$c;
+    if ( r?$d ) print r$d;
 }

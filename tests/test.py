@@ -86,7 +86,7 @@ while True:
         break
     Time.sleep(1)
     
-opt_record = record_type("a", "c")
+opt_record = record_type("one", "a", "b", "c", "d")
 r = record(opt_record)
 r.a = 13
 r.c = "helloworld"
