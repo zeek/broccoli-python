@@ -38,6 +38,7 @@ def test2b(a,b,c,d,e,f,g,h,i,j,k):
     print repr(j), k
     
 rec = record_type("a", "b")    
+other_rec = record_type("a")
     
 @event(rec)    
 def test4(r):
@@ -85,5 +86,9 @@ while True:
         break
     Time.sleep(1)
     
-    
+opt_record = record_type("one", "a", "b", "c", "d")
+r = record(opt_record)
+r.a = 13
+r.c = "helloworld"
 
+bc.send("test5", r)

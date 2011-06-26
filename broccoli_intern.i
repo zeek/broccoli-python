@@ -257,9 +257,14 @@ int pyObjToVal(PyObject *val, int type, const char **type_name, void** data)
           BroRecord *rec = bro_record_new();
           int i;
           for ( i = 0; i < PyList_Size(val); i++ ) {
+              PyObject *nameAndValueTuple = PyList_GetItem(val, i);
+              const char* fieldName =
+                  PyString_AsString(PyTuple_GetItem(nameAndValueTuple, 0));
+              PyObject *valueTuple = PyTuple_GetItem(nameAndValueTuple, 1);
+
               int ftype;
               PyObject *fval;
-              if ( ! parseTypeTuple(PyList_GetItem(val, i), &ftype, &fval) )
+              if ( ! parseTypeTuple(valueTuple, &ftype, &fval) )
                   return 0;
 
               const char *ftype_name;
@@ -267,7 +272,7 @@ int pyObjToVal(PyObject *val, int type, const char **type_name, void** data)
               if ( ! pyObjToVal(fval, ftype, &ftype_name, &fdata) )
                   return 0;
 
-              bro_record_add_val(rec, "<unknown>", ftype, 0, fdata);
+              bro_record_add_val(rec, fieldName, ftype, 0, fdata);
               freeBroccoliVal(ftype, fdata);
           }
 
