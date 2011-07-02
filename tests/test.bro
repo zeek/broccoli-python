@@ -1,8 +1,8 @@
 
-@load listen-clear
-redef listen_port_clear    = 47758/tcp;
+@load communication/listen-clear
+redef Communication::listen_port_clear = 47758/tcp;
 
-redef Remote::destinations += {
+redef Communication::nodes += {
 	["broping"] = [$host = 127.0.0.1, $events = /test1|test3|test5/, $connect=F, $ssl=F]
 };
 
