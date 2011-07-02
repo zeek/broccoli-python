@@ -1,3 +1,10 @@
+0.3 | 2011-05-05 20:42:47 -0700
+
+  * CMake build system. (Jon Siwek). 
+
+  * Adapting to work with 64-bit integers, which Bro and Broccoli are
+    now using. (Robin Sommer)
+
 0.2
     - Repository switched to git, and README converted to reSt.
     - License changed to BSD-style. 
