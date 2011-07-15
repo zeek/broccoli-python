@@ -1,5 +1,5 @@
 
-@load communication/listen-clear
+@load frameworks/communication/listen-clear
 redef Communication::listen_port_clear = 47758/tcp;
 
 redef Communication::nodes += {
