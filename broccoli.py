@@ -73,32 +73,31 @@ def event(*types):
     def make_wrapper(func):
 
         def wrapped_f(*args):
-
-	    new_args = []
-
+            new_args = []
+            
             ptypes = types
             if not ptypes:
                 # Allow omitting types.
                 ptypes =  [None] *len(args)
-
+                
             for (arg, type) in zip(args, ptypes):
                 # Split the 2-tuples passed to us by the C layer.
                 (btype, val) = arg
                 # Create an instance of the corresponding Python type.
-		new_args += [instantiate(btype, val, type)]
-
+                new_args += [instantiate(btype, val, type)]
+                
             # Finally call the callback.
-	    return func(*new_args);
-
+            return func(*new_args);
+            
         # Pretend the wrapper has the name of the actual callback (rather than "wrapped_f" ...)
-	wrapped_f.func_name = func.func_name
-
+        wrapped_f.func_name = func.func_name
+        
         # Add the wrapped function to the list of events handlers.
         global _Events
         _Events += [wrapped_f]
-
+        
         return wrapped_f
-
+        
     # Allow @event instead of @event()
     if len(types) == 1 and type(types[0]) == FunctionType:
         func = types[0]
@@ -126,7 +125,7 @@ class Val:
         self.__class__._bro_type = type # Doing it once would be sufficient.
 
     def __str__(self):
-	return str(self.val)
+        return str(self.val)
 
     # Convert value into a 2-tuple (type, val) as expected by the C layer.
     def internalVal(self):
@@ -300,7 +299,7 @@ class record_type:
         # Init the field values.
         vals = [instantiate(btype, val, None) for (btype, val) in vals]
 
-	return record(dst_type, vals)
+        return record(dst_type, vals)
 
 # Class for record instances.
 class record(Val):
@@ -308,7 +307,7 @@ class record(Val):
         Val.__init__(self, BRO_TYPE_RECORD, {})
 
         # Save the record's type.
-	self._type = type
+        self._type = type
 
         if not vals:
             # Use Nones if we didn't get any values.
