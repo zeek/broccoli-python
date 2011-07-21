@@ -4,6 +4,10 @@ import time as Time
 
 from broccoli import *
 
+# Don't mind repr() for floats, since that may be shorter as of Python 2.7.
+# Since the time argument might be derived from the the current time, normalize
+# the display precision (e.g. prevent a rounding from tripping up a diff
+# canonifier's regex).
 @event
 def test2(a,b,c,d,e,f,g,h,i,j,k):
     global recv
@@ -11,31 +15,34 @@ def test2(a,b,c,d,e,f,g,h,i,j,k):
     print "==== atomic a %d ====" % recv
     print repr(a), a
     print repr(b), b
-    print repr(c), c
-    print repr(d), d
+    print "%.4f" % c
+    print d
     print repr(e), e
-    print repr(f), f
+    print f
     print repr(g), g
     print repr(h), h
     print repr(i), i
     print repr(j), j
-    print repr(j), k
+    print repr(k), k
 
-# Same except with typing this time.    
+# Same as test2 except with typing this time.
+# For floating point types that are wrapped in a class, we do want to print
+# repr() to see that the event typing works.  Again the time argument is
+# normalized to a constant precision.
 @event(int,count,time,interval,bool,double,addr,port,addr,net,subnet)
 def test2b(a,b,c,d,e,f,g,h,i,j,k):
     print "==== atomic b %d ====" % recv
     print repr(a), a
     print repr(b), b
-    print repr(c), c
+    print repr(c), "%.4f" % c.val
     print repr(d), d
     print repr(e), e
-    print repr(f), f
+    print f
     print repr(g), g
     print repr(h), h
     print repr(i), i
     print repr(j), j
-    print repr(j), k
+    print repr(k), k
     
 rec = record_type("a", "b")    
 other_rec = record_type("a")
