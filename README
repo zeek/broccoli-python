@@ -21,21 +21,19 @@ Download
 --------
 
 Since Bro 1.4, a stable version of the Python module ships as part
-of the Bro distribution in
-``aux/broccoli/bindings/broccoli-python``. 
+of the Bro distribution in ``aux/broccoli/bindings/broccoli-python``.
 
 The most current development version is in a Git repository.  To get
 it, use::
 
-   > git clone -b devel git://git.icir.org/broccoli-python
+   > git clone git://git.bro-ids.org/broccoli-python
 
 Installation
 ------------
 
 Installation of the Python module is pretty straight-forward. After
-Broccoli itself has been `installed
-<http://www.icir.org/christian/broccoli/manual/c55.html>`_, it
-follows the standard installation process for Python modules:
+Broccoli itself has been installed, it follows the standard installation
+process for Python modules:
 
     > python setup.py install
 
@@ -68,8 +66,7 @@ further communication::
      from broccoli import *
      bc = Connection("127.0.0.1:47758")
      
-An ``IOError`` will be raised if the connection cannot be
-established. 
+An ``IOError`` will be raised if the connection cannot be established.
 
 Sending Events
 ~~~~~~~~~~~~~~
@@ -148,8 +145,7 @@ and send it out::
     rec.c = subnet("192.168.1.0/24")
     bc.send("my_event", rec)
     
-NOTE: The Python module does not support nested records at this
-time. 
+.. note:: The Python module does not support nested records at this time.
 
 Receiving Events
 ~~~~~~~~~~~~~~~~
@@ -219,31 +215,15 @@ wrapped into a ``time`` parameter (i.e., ``time(current_time()``)
 Examples
 --------
 
-There are some example scripts in
-`aux/broccoli/bindings/python/tests
-<http://svn.icir.org/bro/branches/robin/work/aux/broccoli/bindings/python/tests/>`_:
+There are some example scripts in the ``tests/`` subdirectory of the
+``broccoli-python`` repository
+`here <http://git.bro-ids.org/broccoli-python.git/tree/HEAD:/tests>`_:
 
-   - `broping.py
-     <http://svn.icir.org/bro/branches/robin/work/aux/broccoli/bindings/python/tests/broping.py>`_
-     is a (simplified) Python version of Broccoli's test program
-     ``broping``. Start Bro with `aux/broccoli/test/broping.bro
-     <http://svn.icir.org/bro/branches/robin/work/aux/broccoli/test/broping.bro>`_.
+   - ``broping.py`` is a (simplified) Python version of Broccoli's test program
+     ``broping``. Start Bro with ``broping.bro``.
    
-   - Similarly, `broping-record.py
-     <http://svn.icir.org/bro/branches/robin/work/aux/broccoli/bindings/python/tests/broping-record.py>`_
-     is a Python version of Broccoli's ``broping`` for records.
-     Start Bro with `aux/broccoli/test/broping-record.bro
-     <http://svn.icir.org/bro/branches/robin/work/aux/broccoli/test/broping-record.bro>`_.
+   - ``broping-record.py`` is a Python version of Broccoli's ``broping``
+     for records. Start Bro with ``broping-record.bro``.
    
-   - `test.py
-     <http://svn.icir.org/bro/branches/robin/work/aux/broccoli/bindings/python/tests/test.py>`_
-     is a very ugly but comprehensive regression test and part of
-     the communication test-suite. Start Bro with `test.bro
-     <http://svn.icir.org/bro/branches/robin/work/aux/broccoli/bindings/python/tests/test.bro>`_.
-   
-   
-
-
-
-
-
+   - ``test.py`` is a very ugly but comprehensive regression test and part of
+     the communication test-suite. Start Bro with ``test.bro``.
