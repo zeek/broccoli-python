@@ -91,8 +91,7 @@ PyObject* valToPyObj(int type, void* data)
         val = PyLong_FromLongLong(*((uint64_t *)data));
         break;
 
-      case BRO_TYPE_IPADDR:
-      case BRO_TYPE_NET: {
+      case BRO_TYPE_IPADDR: {
         val = PyLong_FromLongLong(*((long *)data));
         break;
       }
@@ -179,8 +178,7 @@ int pyObjToVal(PyObject *val, int type, const char **type_name, void** data)
           break;
       }
 
-      case BRO_TYPE_IPADDR:
-      case BRO_TYPE_NET: {
+      case BRO_TYPE_IPADDR: {
           int* tmp = (int *)malloc(sizeof(int));
 		  *tmp = PyInt_AsLong(val);
           *data = tmp;
@@ -371,20 +369,19 @@ void event_callback(BroConn *bc, void *data, BroEvMeta *meta)
 #define BRO_TYPE_TIMER            11
 #define BRO_TYPE_PORT             12
 #define BRO_TYPE_IPADDR           13
-#define BRO_TYPE_NET              14
-#define BRO_TYPE_SUBNET           15
-#define BRO_TYPE_ANY              16
-#define BRO_TYPE_TABLE            17
-#define BRO_TYPE_UNION            18
-#define BRO_TYPE_RECORD           19
-#define BRO_TYPE_LIST             20
-#define BRO_TYPE_FUNC             21
-#define BRO_TYPE_FILE             22
-#define BRO_TYPE_VECTOR           23
-#define BRO_TYPE_ERROR            24
-#define BRO_TYPE_PACKET           25
-#define BRO_TYPE_SET              26
-#define BRO_TYPE_MAX              27
+#define BRO_TYPE_SUBNET           14
+#define BRO_TYPE_ANY              15
+#define BRO_TYPE_TABLE            16
+#define BRO_TYPE_UNION            17
+#define BRO_TYPE_RECORD           18
+#define BRO_TYPE_LIST             19
+#define BRO_TYPE_FUNC             20
+#define BRO_TYPE_FILE             21
+#define BRO_TYPE_VECTOR           22
+#define BRO_TYPE_ERROR            23
+#define BRO_TYPE_PACKET           24
+#define BRO_TYPE_SET              25
+#define BRO_TYPE_MAX              26
 #define BRO_CFLAG_NONE                      0
 #define BRO_CFLAG_RECONNECT           (1 << 0)
 #define BRO_CFLAG_ALWAYS_QUEUE        (1 << 1)
