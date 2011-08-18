@@ -219,26 +219,6 @@ class addr(Val):
     def _parse(self, str):
         return struct.unpack('=l',socket.inet_aton(str))[0]
 
-# Not supported at this point. Need to write a parse function.
-class net(Val):
-    def __init__(self, str=None, internal=None):
-        v = internal and internal or self._parse(str)
-        Val.__init__(self, BRO_TYPE_NET, v)
-
-    def __str__(self):
-        return "X.X.X"  # FIXME
-
-    @staticmethod
-    def _factory(val, dst_type):
-        v = net(internal=val)
-        if dst_type == str or not dst_type:
-            return str(v)
-        _typeCheck(dst_type, net)
-        return v
-
-    def _parse(self, str):
-        return 0   # FIXME
-
 class subnet(Val):
     def __init__(self, str=None, internal=None):
         v = internal and internal or self._parse(str)
@@ -405,7 +385,6 @@ _Factories = {
     BRO_TYPE_STRING: _string_factory,
     BRO_TYPE_PORT: port._factory,
     BRO_TYPE_IPADDR: addr._factory,
-    BRO_TYPE_NET: net._factory,
     BRO_TYPE_SUBNET: subnet._factory,
     BRO_TYPE_ENUM: enum._factory,
     BRO_TYPE_RECORD: record_type._factory,
