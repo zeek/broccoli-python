@@ -1,5 +1,3 @@
-// $Id$
-
 %module broccoli_intern
 %{
 // Include the header in the wrapper code.
