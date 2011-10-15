@@ -1,3 +1,39 @@
+
+0.5 | 2011-10-18 09:59:49 -0700
+
+  * Updates for changes to communication API. (Seth Hall)
+
+  * Distribution cleanup. (Jon Siwek and Robin Sommer)
+
+  * Install binaries with an RPATH (Jon Siwek)
+
+  * Remove the 'net' type from Broccoli python bindings. Aaddresses
+    #535).
+
+  * Workaround for FreeBSD CMake port missing debug flags. (Jon Siwek)
+
+  * Adjust how python-broccoli test script prints floats.
+
+  * Allow record instances that don't initialize all fields.  (Jon
+    Siwek)
+
+  * Update tests w/ example of sending a partial records. (Jon Siwek)
+
+  * Fix pybroccoli record instantiation. Declaring more than one
+    record_type could cause it to break because only the last-declared
+    record_type was used in the instantiation.  (Jon Siwek)
+
+  * Change to fill in record field names. Before, it was sending
+    records with hardcoded "<unknown>" field names. (Jon Siwek)
+
+  * Adating CMake's include path based on output of python-config.
+    (Robin Sommer)
+
+  * Teaching CMake to use python-config for finding libraries. (Robin
+    Sommer)
+
+  * Making python-broccoli work with 64-bit integers. (Robin Sommer)
+
 0.4 | 2011-07-19 17:54:35 -0700
 
   * Improvements and fixes to record implementation. (Jon Siwek)
@@ -13,11 +49,11 @@
 
 0.3 | 2011-05-05 20:42:47 -0700
 
-  * CMake build system. (Jon Siwek). 
+  * CMake build system. (Jon Siwek).
 
   * Adapting to work with 64-bit integers, which Bro and Broccoli are
     now using. (Robin Sommer)
 
 0.2
     - Repository switched to git, and README converted to reSt.
-    - License changed to BSD-style. 
+    - License changed to BSD-style.

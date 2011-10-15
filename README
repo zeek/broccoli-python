@@ -1,39 +1,42 @@
-.. 	-*- mode: rst -*-
+..	-*- mode: rst-mode -*-
+..
+.. Version number is filled in automatically.
+.. |version| replace:: 0.5
 
+============================
 Python Bindings for Broccoli
 ============================
 
-.. |today| date::
+.. class:: opening
 
-Date: |today|
+    This Python module provides bindings for `Broccoli
+    <{{git('broccoli:doc/broccoli-manual.rst')}}>`_, Bro's client
+    communication library. In general, the bindings provide the same
+    functionality as Broccoli's C API.
 
 .. contents::
 
-Overview
---------
-
-This Python module provides bindings for `Broccoli
-<http://www.icir.org/christian/broccoli/index.html>`_, Bro's client
-communication library. In general, the bindings provide the same
-functionality as Broccoli's C API. 
 
 Download
 --------
 
-Since Bro 1.4, a stable version of the Python module ships as part
-of the Bro distribution in ``aux/broccoli/bindings/broccoli-python``.
+You can find the latest Broccoli-Python release for download at
+http://www.bro-ids.org/download.
 
-The most current development version is in a Git repository.  To get
-it, use::
+Broccoli-Python's git repository is located at `git://git.bro-ids.org/broccoli-python.git
+<git://git.bro-ids.org/broccoli-python.git>`__. You can browse the repository
+`here <http://git.bro-ids.org/broccoli-python.git>`__.
 
-   > git clone git://git.bro-ids.org/broccoli-python
+This document describes Broccoli-Python |version|. See the `CHANGES
+<{{git('broccoli-python:CHANGES')}}>`__ file for version history.
+
 
 Installation
 ------------
 
 Installation of the Python module is pretty straight-forward. After
 Broccoli itself has been installed, it follows the standard installation
-process for Python modules:
+process for Python modules::
 
     > python setup.py install
 
@@ -46,7 +49,7 @@ Usage
 -----
 
 The following examples demonstrate how to send and receive Bro
-events in Python. 
+events in Python.
 
 The main challenge when using Broccoli from Python is dealing with
 the data types of Bro event parameters as there is no one-to-one
@@ -54,7 +57,7 @@ mapping between Bro's types and Python's types. The Python modules
 automatically maps between those types which both systems provide
 (such as strings) and provides a set of wrapper classes for Bro
 types which do not have a direct Python equivalent (such as IP
-addresses). 
+addresses).
 
 Connecting to Bro
 ~~~~~~~~~~~~~~~~~
@@ -65,7 +68,7 @@ further communication::
 
      from broccoli import *
      bc = Connection("127.0.0.1:47758")
-     
+
 An ``IOError`` will be raised if the connection cannot be established.
 
 Sending Events
@@ -89,7 +92,7 @@ Data Types
 In the example above, the types of the event parameters are
 automatically derived from the corresponding Python types: the first
 parameter (``5``) has the Bro type ``int`` and the second one
-(``attack!``) has Bro type ``string``. 
+(``attack!``) has Bro type ``string``.
 
 For types which do not have a Python equivalent, the ``broccoli``
 module provides wrapper classes which have the same names as the
@@ -107,7 +110,7 @@ Bro Type   Python Type   Example
 addr                     ``addr("192.168.1.1")``
 bool       bool          ``True``
 count                    ``count(42)``
-double     float         ``3.14``             
+double     float         ``3.14``
 enum                     Type currently not supported
 int 	   int           ``5``
 interval                 ``interval(60)``
@@ -127,14 +130,14 @@ example, a Bro record type::
         b: addr;
         c: subnet;
     };
-    
+
 turns into Python as::
 
     my_record = record_type("a", "b", "c")
-  
+
 As the example shows, Python only needs to know the attribute names
 but not their types. The types are derived automatically in the same
-way as discussed above for atomic event parameters. 
+way as discussed above for atomic event parameters.
 
 Now you can instantiate a record instance of the newly defined type
 and send it out::
@@ -144,7 +147,7 @@ and send it out::
     rec.b = addr("192.168.1.1")
     rec.c = subnet("192.168.1.0/24")
     bc.send("my_event", rec)
-    
+
 .. note:: The Python module does not support nested records at this time.
 
 Receiving Events
@@ -155,10 +158,10 @@ name as the event and mark it with the ``event`` decorator::
 
    @event
    def foo(arg1, arg2):
-       print arg1, arg2    
+       print arg1, arg2
 
 Once you start calling ``bc.processInput()`` regularly (see above),
-each received ``foo`` event will trigger the callback function. 
+each received ``foo`` event will trigger the callback function.
 
 By default, the event's arguments are always passed in with built-in
 Python types. For Bro types which do not have a direct Python
@@ -177,14 +180,14 @@ wrapper classes for non-Python types). Example::
        print arg1, arg2
 
 Here, ``arg1`` will be an instance of the ``count`` wrapper class and
-``arg2`` will be an instance of the ``addr`` wrapper class. 
+``arg2`` will be an instance of the ``addr`` wrapper class.
 
 Protoyping works similarly with built-in Python types::
 
    @event(int, string):
    def foo(arg1, arg2):
        print arg1, arg2
-       
+
 In general, the prototype specifies the types in which the callback
 wants to receive the arguments. This actually provides support for
 simple type casts as some types support conversion to into something
@@ -221,9 +224,9 @@ There are some example scripts in the ``tests/`` subdirectory of the
 
    - ``broping.py`` is a (simplified) Python version of Broccoli's test program
      ``broping``. Start Bro with ``broping.bro``.
-   
+
    - ``broping-record.py`` is a Python version of Broccoli's ``broping``
      for records. Start Bro with ``broping-record.bro``.
-   
+
    - ``test.py`` is a very ugly but comprehensive regression test and part of
      the communication test-suite. Start Bro with ``test.bro``.

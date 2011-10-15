@@ -1,0 +1,15 @@
+include CHANGES
+include CMakeLists.txt
+include COPYING
+include MANIFEST.in
+include Makefile
+include README
+include TODO
+include VERSION
+include broccoli.py
+include broccoli_intern.i
+include setup.py
+include configure
+graft cmake
+graft tests
+
