@@ -17,3 +17,6 @@ dist:
 	rm -rf build/*.tar.gz
 	python setup.py sdist -d build
 	@printf "Package: "; echo build/*.tar.gz
+
+distclean:
+	git reset --hard HEAD && git clean -xdf
