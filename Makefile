@@ -19,4 +19,4 @@ dist:
 	@printf "Package: "; echo build/*.tar.gz
 
 distclean:
-	git reset --hard HEAD && git clean -xdf
+	rm -rf build/
