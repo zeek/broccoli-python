@@ -1,7 +1,7 @@
 
-0.5 | 2011-10-21 15:16:31 -0500
+0.5 | 2011-10-25 18:03:35 -0700
 
-  * Change distclean to only remove build dir. (Jon Siwek)
+  * Make dist now cleans the copied source. (Jon Siwek)
 
   * Add configure-time check that swig can generate python wrappers.
     Addresses #642. (Jon Siwek)
