@@ -1,5 +1,10 @@
 
-0.5 | 2011-10-18 09:59:49 -0700
+0.5 | 2011-10-21 15:16:31 -0500
+
+  * Change distclean to only remove build dir. (Jon Siwek)
+
+  * Add configure-time check that swig can generate python wrappers.
+    Addresses #642. (Jon Siwek)
 
   * Updates for changes to communication API. (Seth Hall)
 
