@@ -5,12 +5,10 @@ import sys
 
 from distutils.core import setup, Extension
 
-setup(name="pybroccoli", 
-    version="0.2",
-    author="Robin Sommer",
-    author_email="robin@icir.org",
+setup(name="broccoli-python", 
+    version="0.5", # Filled in automatically.
+    author_email="info@bro-ids.org",
     license="BSD",
-    url="http://www.icir.org/robin/pybroccoli",
     py_modules=['broccoli'],
     ext_modules = [ 
         Extension("_broccoli_intern", ["broccoli_intern_wrap.c"],
