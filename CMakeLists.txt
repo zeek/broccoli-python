@@ -54,6 +54,8 @@ include(UseSWIG)
 
 swig_add_module(broccoli_intern python broccoli_intern.i)
 swig_link_libraries(broccoli_intern ${Broccoli_LIBRARY} ${PYTHON_LIBRARIES})
+set_source_files_properties(${swig_generated_file_fullname} PROPERTIES
+                            COMPILE_FLAGS -fno-strict-aliasing)
 
 ########################################################################
 ## Install Files
