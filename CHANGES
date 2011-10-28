@@ -1,5 +1,5 @@
 
-0.5-1 | 2011-10-26 10:12:46 -0500
+0.51 | 2011-10-27 17:41:32 -0700
 
   * Compile SWIG bindings with no-strict-aliasing (addresses #644).
     (Jon Siwek)
