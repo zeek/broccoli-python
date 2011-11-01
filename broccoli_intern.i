@@ -103,7 +103,7 @@ PyObject* valToPyObj(int type, void* data)
 
       case BRO_TYPE_STRING: {
           BroString *str = (BroString*)data;
-          val = PyString_FromStringAndSize(str->str_val, str->str_len);
+          val = PyString_FromStringAndSize((const char*)str->str_val, str->str_len);
           break;
       }
 
@@ -200,7 +200,7 @@ int pyObjToVal(PyObject *val, int type, const char **type_name, void** data)
               return 0;
 
           str->str_len = strlen(tmp);
-          str->str_val = strdup(tmp);
+          str->str_val = (uchar*)strdup(tmp);
           *data = str;
           break;
       }
@@ -299,8 +299,10 @@ void event_callback(BroConn *bc, void *data, BroEvMeta *meta)
 
     Py_DECREF(pyargs);
 
-    if ( result )
-	    Py_DECREF(result);
+	if ( result )
+		{
+		Py_DECREF(result);
+		}
 }
 
 %}
@@ -338,8 +340,17 @@ void event_callback(BroConn *bc, void *data, BroEvMeta *meta)
         return NULL;
 
     $1 = type;
-    $2 = type_name;
+    // swig ltypes are stripped of qualifiers so the following cast
+    // is just to get rid of a compiler warning.
+    $2 = (char*)type_name;
     $3 = data;
+}
+
+%typemap(arginit) (int type, const char *type_name, const void *val)
+{
+    $1 = 0;
+    $2 = 0;
+    $3 = 0;
 }
 
 %typemap(freearg) (int type, const char *type_name, const void *val)
@@ -350,6 +361,7 @@ void event_callback(BroConn *bc, void *data, BroEvMeta *meta)
     if ( $2 )
         free($2);
 }
+
 
 ///// The following is a subset of broccoli.h for which we provide wrappers.
 
