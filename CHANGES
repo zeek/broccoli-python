@@ -1,5 +1,15 @@
 
-0.5 | 2011-10-18 09:59:49 -0700
+0.51 | 2011-10-27 17:41:32 -0700
+
+  * Compile SWIG bindings with no-strict-aliasing (addresses #644).
+    (Jon Siwek)
+
+0.5 | 2011-10-25 20:18:20 -0700
+
+  * Make dist now cleans the copied source. (Jon Siwek)
+
+  * Add configure-time check that swig can generate python wrappers.
+    Addresses #642. (Jon Siwek)
 
   * Updates for changes to communication API. (Seth Hall)
 
