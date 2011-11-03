@@ -1,7 +1,11 @@
 
+0.51-3 | 2011-11-03 15:17:19 -0700
+
+  * Fixing compiler warnings. Addresses #388. (Jon Siwek)
+
 0.51 | 2011-10-27 17:41:32 -0700
 
-  * Compile SWIG bindings with no-strict-aliasing (addresses #644).
+  * Compile SWIG bindings with no-strict-aliasing. Addresses #644.
     (Jon Siwek)
 
 0.5 | 2011-10-25 20:18:20 -0700
