@@ -10,12 +10,8 @@ include(FindRequiredPackage)
 FindRequiredPackage(Broccoli)
 FindRequiredPackage(SWIG)
 FindRequiredPackage(PythonInterp)
+FindRequiredPackage(PythonDev)
 
-execute_process(COMMAND ${PYTHON_EXECUTABLE}-config --prefix
-                OUTPUT_VARIABLE PYTHON_PREFIX
-                OUTPUT_STRIP_TRAILING_WHITESPACE
-                ERROR_QUIET
-                )
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/example.i "%module example %{%}")
 execute_process(COMMAND ${SWIG_EXECUTABLE} -python
     ${CMAKE_CURRENT_BINARY_DIR}/example.i
@@ -24,13 +20,6 @@ if (SWIG_PYTHON_ERR)
     message(FATAL_ERROR "Swig installation doesn't support Python wrapper generation: ${SWIG_PYTHON_ERR}")
 endif ()
 
-if ( PYTHON_PREFIX )
-    set(CMAKE_LIBRARY_PATH ${PYTHON_PREFIX}/lib64 ${PYTHON_PREFIX}/lib ${CMAKE_LIBRARY_PATH})
-    set(CMAKE_INCLUDE_PATH ${PYTHON_PREFIX}/include ${CMAKE_INCLUDE_PATH})
-endif ()
-
-FindRequiredPackage(PythonLibs)
-
 if (MISSING_PREREQS)
     foreach (prereq ${MISSING_PREREQ_DESCS})
         message(SEND_ERROR ${prereq})
@@ -38,13 +27,7 @@ if (MISSING_PREREQS)
     message(FATAL_ERROR "Configuration aborted due to missing prerequisites")
 endif ()
 
-if (PYTHON_INCLUDE_PATH)
-    # CMake 2.6 compatibility -- FindPythonLibs used to set PYTHON_INCLUDE_PATH
-    include_directories(BEFORE ${PYTHON_INCLUDE_PATH})
-else ()
-    include_directories(BEFORE ${PYTHON_INCLUDE_DIR})
-endif ()
-
+include_directories(BEFORE ${PYTHON_INCLUDE_DIR})
 include_directories(BEFORE ${Broccoli_INCLUDE_DIR})
 
 ########################################################################
