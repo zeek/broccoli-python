@@ -7,10 +7,9 @@
 Python Bindings for Broccoli
 ============================
 
-.. class:: opening
+.. rst-class:: opening
 
-    This Python module provides bindings for `Broccoli
-    <{{git('broccoli:doc/broccoli-manual.rst')}}>`_, Bro's client
+    This Python module provides bindings for Broccoli, Bro's client
     communication library. In general, the bindings provide the same
     functionality as Broccoli's C API.
 
@@ -27,8 +26,8 @@ Broccoli-Python's git repository is located at `git://git.bro-ids.org/broccoli-p
 <git://git.bro-ids.org/broccoli-python.git>`__. You can browse the repository
 `here <http://git.bro-ids.org/broccoli-python.git>`__.
 
-This document describes Broccoli-Python |version|. See the `CHANGES
-<{{git('broccoli-python:CHANGES')}}>`__ file for version history.
+This document describes Broccoli-Python |version|. See the ``CHANGES``
+file for version history.
 
 
 Installation
@@ -38,12 +37,12 @@ Installation of the Python module is pretty straight-forward. After
 Broccoli itself has been installed, it follows the standard installation
 process for Python modules::
 
-    > python setup.py install
+    python setup.py install
 
 Try the following to test the installation. If you do not see any
 error message, everything should be fine::
 
-    > python -c "import broccoli"
+    python -c "import broccoli"
 
 Usage
 -----
