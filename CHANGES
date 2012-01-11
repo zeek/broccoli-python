@@ -1,4 +1,11 @@
 
+0.51-16 | 2012-01-09 16:11:01 -0800
+
+  * Submodule README conformity changes (Jon Siwek)
+
+  * Simplify finding of Python headers/libraries. Addresses #666 (Jon
+    Siwek)
+
 0.51-3 | 2011-11-03 15:17:19 -0700
 
   * Fixing compiler warnings. Addresses #388. (Jon Siwek)
