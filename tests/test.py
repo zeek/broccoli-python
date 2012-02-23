@@ -9,7 +9,7 @@ from broccoli import *
 # the display precision (e.g. prevent a rounding from tripping up a diff
 # canonifier's regex).
 @event
-def test2(a,b,c,d,e,f,g,h,i,j):
+def test2(a,b,c,d,e,f,g,h,i,j,i6,j6):
     global recv
     recv += 1
     print "==== atomic a %d ====" % recv
@@ -23,13 +23,15 @@ def test2(a,b,c,d,e,f,g,h,i,j):
     print repr(h), h
     print repr(i), i
     print repr(j), j
+    print repr(i6), i6
+    print repr(j6), j6
 
 # Same as test2 except with typing this time.
 # For floating point types that are wrapped in a class, we do want to print
 # repr() to see that the event typing works.  Again the time argument is
 # normalized to a constant precision.
-@event(int,count,time,interval,bool,double,addr,port,addr,subnet)
-def test2b(a,b,c,d,e,f,g,h,i,j):
+@event(int,count,time,interval,bool,double,addr,port,addr,subnet,addr,subnet)
+def test2b(a,b,c,d,e,f,g,h,i,j,i6,j6):
     print "==== atomic b %d ====" % recv
     print repr(a), a
     print repr(b), b
@@ -41,6 +43,8 @@ def test2b(a,b,c,d,e,f,g,h,i,j):
     print repr(h), h
     print repr(i), i
     print repr(j), j
+    print repr(i6), i6
+    print repr(j6), j6
     
 rec = record_type("a", "b")    
 other_rec = record_type("a")
@@ -66,7 +70,9 @@ bc.send("test1",
     string("Servus"), 
     port("5555/tcp"), 
     addr("6.7.6.5"), 
-    subnet("192.168.0.0/16")
+    subnet("192.168.0.0/16"),
+    addr("2001:db8:85a3::8a2e:370:7334"),
+    subnet("2001:db8:85a3::/48")
     )
 
 recv = 0

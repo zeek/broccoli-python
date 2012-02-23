@@ -39,7 +39,7 @@ class Connection:
     def send(self, name, *args):
         ev = bro_event_new(name)
         for arg in args:
-            bro_event_add_val(ev, _getInternalVal(arg));
+            bro_event_add_val(ev, _getInternalVal(arg))
 
         bro_event_send(self.bc, ev);
         bro_event_free(ev);
@@ -206,7 +206,7 @@ class addr(Val):
         Val.__init__(self, BRO_TYPE_IPADDR, v)
 
     def __str__(self):
-        return socket.inet_ntoa(struct.pack('=l', self.val))
+        return _addrTupleToString(self.val)
 
     @staticmethod
     def _factory(val, dst_type):
@@ -217,7 +217,7 @@ class addr(Val):
         return v
 
     def _parse(self, str):
-        return struct.unpack('=l',socket.inet_aton(str))[0]
+        return _addrStringToTuple(str)
 
 class subnet(Val):
     def __init__(self, str=None, internal=None):
@@ -226,7 +226,7 @@ class subnet(Val):
 
     def __str__(self):
         (net, mask) = self.val
-        return "%s/%d" % (socket.inet_ntoa(struct.pack('=l', net)), mask)
+        return "%s/%d" % (_addrTupleToString(net), mask)
 
     @staticmethod
     def _factory(val, dst_type):
@@ -238,7 +238,7 @@ class subnet(Val):
 
     def _parse(self, str):
         (net, mask) = str.split("/")
-        return (struct.unpack('=l',socket.inet_aton(net))[0], int(mask))
+        return (_addrStringToTuple(net), int(mask))
 
 # Not supported at this point since Broccoli seems to have problems with
 # enums. Also need to write parse functions.
@@ -322,6 +322,20 @@ class record(Val):
 
         # FIXME: Check that key is defined in type.
         self.__dict__[key] = val
+
+# Helper to convert a tuple of network-byte-order IP address to a string
+def _addrTupleToString(a):
+    if len(a) == 1:
+        return socket.inet_ntop(socket.AF_INET, struct.pack('=L', a[0]));
+    else:
+        return socket.inet_ntop(socket.AF_INET6, struct.pack('=4L', a[0], a[1], a[2], a[3]))
+
+# Helper to convert an IPv4/IPv6 address string into a network-byte-order tuple
+def _addrStringToTuple(s):
+    if ':' in s:
+        return struct.unpack('=4L', socket.inet_pton(socket.AF_INET6, s))
+    else:
+        return struct.unpack('=L', socket.inet_pton(socket.AF_INET, s))
 
 # Helper to check whether two Python types match.
 def _typeCheck(type1, type2):

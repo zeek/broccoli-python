@@ -12,10 +12,10 @@ redef Communication::nodes += {
 type foo: enum { CONST1, CONST2, CONST3 };
 
 # No enum currently as Broccoli has trouble receiving them.
-global test2: event(a: int, b: count, c: time, d: interval, e: bool, f: double, g: string, h: port, i: addr, j: subnet);
-global test2b: event(a: int, b: count, c: time, d: interval, e: bool, f: double, g: string, h: port, i: addr, j: subnet);
+global test2: event(a: int, b: count, c: time, d: interval, e: bool, f: double, g: string, h: port, i: addr, j: subnet, i6: addr, j6: subnet);
+global test2b: event(a: int, b: count, c: time, d: interval, e: bool, f: double, g: string, h: port, i: addr, j: subnet, i6: addr, j6: subnet);
 
-event test1(a: int, b: count, c: time, d: interval, e: bool, f: double, g: string, h: port, i: addr, j: subnet)
+event test1(a: int, b: count, c: time, d: interval, e: bool, f: double, g: string, h: port, i: addr, j: subnet, i6: addr, j6: subnet)
 {
     print "==== atomic";
     print a;
@@ -27,11 +27,13 @@ event test1(a: int, b: count, c: time, d: interval, e: bool, f: double, g: strin
     print g;
     print h;
     print i;
+    print i6;
     print j;
+    print j6;
     
-    event test2(-4, 42, current_time(), 1min, T, 3.14, "Hurz", 12345/udp, 1.2.3.4, 22.33.44.0/24);
-    event test2(a,b,c,d,e,f,g,h,i,j);
-    event test2b(a,b,c,d,e,f,g,h,i,j);
+    event test2(-4, 42, current_time(), 1min, T, 3.14, "Hurz", 12345/udp, 1.2.3.4, 22.33.44.0/24, 2607:f8b0:4009:802::1014, 2607:f8b0:4009:802::1014/32);
+    event test2(a,b,c,d,e,f,g,h,i,j,i6,j6);
+    event test2b(a,b,c,d,e,f,g,h,i,j,i6,j6);
 }
 
 ### Testing record types.

@@ -90,7 +90,11 @@ PyObject* valToPyObj(int type, void* data)
         break;
 
       case BRO_TYPE_IPADDR: {
-        val = PyLong_FromLongLong(*((long *)data));
+        BroAddr *addr = (BroAddr*)data;
+        val = PyTuple_New(addr->size);
+        int i;
+        for ( i = 0; i < addr->size; ++i )
+            PyTuple_SetItem(val, i, PyInt_FromLong(addr->addr[i]));
         break;
       }
 
@@ -125,8 +129,12 @@ PyObject* valToPyObj(int type, void* data)
 
       case BRO_TYPE_SUBNET: {
           BroSubnet *subnet = (BroSubnet*)data;
+          PyObject *addr = PyTuple_New(subnet->sn_net.size);
           val = PyTuple_New(2);
-          PyTuple_SetItem(val, 0, PyInt_FromLong(subnet->sn_net));
+          int i;
+          for ( i = 0; i < subnet->sn_net.size; ++i )
+              PyTuple_SetItem(addr, i, PyInt_FromLong(subnet->sn_net.addr[i]));
+          PyTuple_SetItem(val, 0, addr);
           PyTuple_SetItem(val, 1, PyInt_FromLong(subnet->sn_width));
           break;
       }
@@ -177,9 +185,19 @@ int pyObjToVal(PyObject *val, int type, const char **type_name, void** data)
       }
 
       case BRO_TYPE_IPADDR: {
-          int* tmp = (int *)malloc(sizeof(int));
-		  *tmp = PyInt_AsLong(val);
-          *data = tmp;
+          if ( ! ( PyTuple_Check(val) &&
+                   ( PyTuple_Size(val) == 1 || PyTuple_Size(val) == 4 ) ) ) {
+              PyErr_SetString(PyExc_RuntimeError,
+                              "addr must be 1-tuple or 4-tuple");
+              return 0;
+          }
+
+          BroAddr* addr = (BroAddr*)malloc(sizeof(BroAddr));
+          addr->size = PyTuple_Size(val);
+          int i;
+          for ( i = 0; i < addr->size; ++i )
+              addr->addr[i] = PyInt_AsLong(PyTuple_GetItem(val, i));
+          *data = addr;
           break;
       }
 
@@ -241,9 +259,19 @@ int pyObjToVal(PyObject *val, int type, const char **type_name, void** data)
               PyErr_SetString(PyExc_RuntimeError, "subnet must be 2-tuple");
               return 0;
           }
+          PyObject* addr = PyTuple_GetItem(val, 0);
+          if ( ! ( PyTuple_Check(addr) &&
+                   ( PyTuple_Size(addr) == 1 || PyTuple_Size(addr) == 4 ) ) ) {
+              PyErr_SetString(PyExc_RuntimeError,
+                              "subnet's addr must be 1-tuple or 4-tuple");
+              return 0;
+          }
 
           BroSubnet* subnet = (BroSubnet *)malloc(sizeof(BroSubnet));
-          subnet->sn_net = PyInt_AsLong(PyTuple_GetItem(val, 0));
+          subnet->sn_net.size = PyTuple_Size(addr);
+          int i;
+          for ( i = 0; i < subnet->sn_net.size; ++i )
+              subnet->sn_net.addr[i] = PyInt_AsLong(PyTuple_GetItem(addr, i));
           subnet->sn_width = PyInt_AsLong(PyTuple_GetItem(val, 1));
           *data = subnet;
           break;
