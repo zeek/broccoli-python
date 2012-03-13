@@ -31,7 +31,7 @@ event test1(a: int, b: count, c: time, d: interval, e: bool, f: double, g: strin
     print j;
     print j6;
     
-    event test2(-4, 42, current_time(), 1min, T, 3.14, "Hurz", 12345/udp, 1.2.3.4, 22.33.44.0/24, 2607:f8b0:4009:802::1014, 2607:f8b0:4009:802::1014/32);
+    event test2(-4, 42, current_time(), 1min, T, 3.14, "Hurz", 12345/udp, 1.2.3.4, 22.33.44.0/24, [2607:f8b0:4009:802::1014], [2607:f8b0:4009:802::1014]/32);
     event test2(a,b,c,d,e,f,g,h,i,j,i6,j6);
     event test2b(a,b,c,d,e,f,g,h,i,j,i6,j6);
 }
