@@ -3,6 +3,7 @@
 // Include the header in the wrapper code.
 #include <broccoli.h>
 #include <stdint.h>
+#include <string.h>
 
 // Broccoli internal struct. Easier to copy that here than to include a bunch
 // of Broccoli's internal headers.
@@ -91,10 +92,14 @@ PyObject* valToPyObj(int type, void* data)
 
       case BRO_TYPE_IPADDR: {
         BroAddr *addr = (BroAddr*)data;
-        val = PyTuple_New(addr->size);
+        int sz = bro_util_is_v4_addr(addr) ? 1 : 4;
+        val = PyTuple_New(sz);
         int i;
-        for ( i = 0; i < addr->size; ++i )
-            PyTuple_SetItem(val, i, PyInt_FromLong(addr->addr[i]));
+        if ( sz == 1 )
+            PyTuple_SetItem(val, 0, PyInt_FromLong(addr->addr[3]));
+        else
+            for ( i = 0; i < 4; ++i )
+                PyTuple_SetItem(val, i, PyInt_FromLong(addr->addr[i]));
         break;
       }
 
@@ -129,11 +134,17 @@ PyObject* valToPyObj(int type, void* data)
 
       case BRO_TYPE_SUBNET: {
           BroSubnet *subnet = (BroSubnet*)data;
-          PyObject *addr = PyTuple_New(subnet->sn_net.size);
+          int sz = bro_util_is_v4_addr(&subnet->sn_net) ? 1 : 4;
+          PyObject *addr = PyTuple_New(sz);
           val = PyTuple_New(2);
           int i;
-          for ( i = 0; i < subnet->sn_net.size; ++i )
-              PyTuple_SetItem(addr, i, PyInt_FromLong(subnet->sn_net.addr[i]));
+          if ( sz == 1 )
+                  PyTuple_SetItem(addr, 0,
+                                  PyInt_FromLong(subnet->sn_net.addr[3]));
+          else
+              for ( i = 0; i < 4; ++i )
+                  PyTuple_SetItem(addr, i,
+                                  PyInt_FromLong(subnet->sn_net.addr[i]));
 
           PyTuple_SetItem(val, 0, addr);
           PyTuple_SetItem(val, 1, PyInt_FromLong(subnet->sn_width));
@@ -194,10 +205,16 @@ int pyObjToVal(PyObject *val, int type, const char **type_name, void** data)
           }
 
           BroAddr* addr = (BroAddr*)malloc(sizeof(BroAddr));
-          addr->size = PyTuple_Size(val);
-          int i;
-          for ( i = 0; i < addr->size; ++i )
-              addr->addr[i] = PyInt_AsLong(PyTuple_GetItem(val, i));
+          int i = PyTuple_Size(val);
+          if ( i == 1 )
+              {
+              memcpy(addr->addr, BRO_IPV4_MAPPED_PREFIX,
+                     sizeof(BRO_IPV4_MAPPED_PREFIX));
+              addr->addr[3] = PyInt_AsLong(PyTuple_GetItem(val, 0));
+              }
+          else
+              for ( i = 0; i < 4; ++i )
+                  addr->addr[i] = PyInt_AsLong(PyTuple_GetItem(val, i));
 
           *data = addr;
           break;
@@ -270,10 +287,17 @@ int pyObjToVal(PyObject *val, int type, const char **type_name, void** data)
           }
 
           BroSubnet* subnet = (BroSubnet *)malloc(sizeof(BroSubnet));
-          subnet->sn_net.size = PyTuple_Size(addr);
-          int i;
-          for ( i = 0; i < subnet->sn_net.size; ++i )
-              subnet->sn_net.addr[i] = PyInt_AsLong(PyTuple_GetItem(addr, i));
+          int i = PyTuple_Size(addr);
+          if ( i == 1 )
+              {
+              memcpy(subnet->sn_net.addr, BRO_IPV4_MAPPED_PREFIX,
+                     sizeof(BRO_IPV4_MAPPED_PREFIX));
+              subnet->sn_net.addr[3] = PyInt_AsLong(PyTuple_GetItem(addr, 0));
+              }
+          else
+              for ( i = 0; i < 4; ++i )
+                  subnet->sn_net.addr[i] =
+                      PyInt_AsLong(PyTuple_GetItem(addr, i));
 
           subnet->sn_width = PyInt_AsLong(PyTuple_GetItem(val, 1));
           *data = subnet;
