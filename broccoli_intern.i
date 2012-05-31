@@ -23,6 +23,70 @@ PyObject* makeTypeTuple(int type, PyObject *val)
     return tuple;
 }
 
+// Builds a tuple representing an IP address.
+// Which consists of either 1-element in network-order for IPv4, or 4
+// elements in network-order for IPv6.
+PyObject* makeAddrTuple(const BroAddr* a)
+    {
+    int i;
+    PyObject* rval = 0;
+
+    int len = bro_util_is_v4_addr(a) ? 1 : 4;
+    rval = PyTuple_New(len);
+
+    if ( len == 1 )
+        PyTuple_SetItem(rval, 0, PyLong_FromUnsignedLong(a->addr[3]));
+    else
+        for ( i = 0; i < 4; ++i )
+            PyTuple_SetItem(rval, i, PyLong_FromUnsignedLong(a->addr[i]));
+    return rval;
+    }
+
+// Checks that a tuple representing an IP address is either length one or four
+// and all elements are either int or long types, and returns 1 if true, else 0.
+int checkAddrTuple(PyObject* o)
+    {
+    if ( ! ( PyTuple_Check(o) &&
+         ( PyTuple_Size(o) == 1 || PyTuple_Size(o) == 4 ) ) )
+        {
+        PyErr_SetString(PyExc_RuntimeError,
+                        "address must be a 1-tuple or 4-tuple");
+        return 0;
+        }
+
+    int i;
+    for ( i = 0; i < PyTuple_Size(o); ++i )
+        {
+        PyObject* it = PyTuple_GetItem(o, i);
+        if ( ! PyLong_Check(it) && ! PyInt_Check(it) )
+            {
+            PyErr_SetString(PyExc_RuntimeError,
+                            "address must contain ints or longs");
+            return 0;
+            }
+        }
+
+    return 1;
+    }
+
+// Fills in the Broccoli representation of an IP address from the Python one.
+void parseAddrTuple(PyObject* o, BroAddr* a)
+    {
+    int i;
+    if ( PyTuple_Size(o) == 1 )
+        {
+        memcpy(a->addr, BRO_IPV4_MAPPED_PREFIX, sizeof(BRO_IPV4_MAPPED_PREFIX));
+        PyObject* it = PyTuple_GetItem(o, 0);
+        a->addr[3] = PyInt_AsUnsignedLongMask(it);
+        }
+    else
+        for ( i = 0; i < 4; ++i )
+            {
+            PyObject* it = PyTuple_GetItem(o, i);
+            a->addr[i] = PyInt_AsUnsignedLongMask(it);
+            }
+    }
+
 // Parses a 2-tuple (type, object). Return 1 on success.
 // Borrows input's reference to object.
 int parseTypeTuple(PyObject* input, int *type, PyObject **val)
@@ -91,15 +155,7 @@ PyObject* valToPyObj(int type, void* data)
         break;
 
       case BRO_TYPE_IPADDR: {
-        BroAddr *addr = (BroAddr*)data;
-        int sz = bro_util_is_v4_addr(addr) ? 1 : 4;
-        val = PyTuple_New(sz);
-        int i;
-        if ( sz == 1 )
-            PyTuple_SetItem(val, 0, PyInt_FromLong(addr->addr[3]));
-        else
-            for ( i = 0; i < 4; ++i )
-                PyTuple_SetItem(val, i, PyInt_FromLong(addr->addr[i]));
+        val = makeAddrTuple((BroAddr*)data);
         break;
       }
 
@@ -134,18 +190,8 @@ PyObject* valToPyObj(int type, void* data)
 
       case BRO_TYPE_SUBNET: {
           BroSubnet *subnet = (BroSubnet*)data;
-          int sz = bro_util_is_v4_addr(&subnet->sn_net) ? 1 : 4;
-          PyObject *addr = PyTuple_New(sz);
+          PyObject *addr = makeAddrTuple(&subnet->sn_net);
           val = PyTuple_New(2);
-          int i;
-          if ( sz == 1 )
-                  PyTuple_SetItem(addr, 0,
-                                  PyInt_FromLong(subnet->sn_net.addr[3]));
-          else
-              for ( i = 0; i < 4; ++i )
-                  PyTuple_SetItem(addr, i,
-                                  PyInt_FromLong(subnet->sn_net.addr[i]));
-
           PyTuple_SetItem(val, 0, addr);
           PyTuple_SetItem(val, 1, PyInt_FromLong(subnet->sn_width));
           break;
@@ -197,25 +243,11 @@ int pyObjToVal(PyObject *val, int type, const char **type_name, void** data)
       }
 
       case BRO_TYPE_IPADDR: {
-          if ( ! ( PyTuple_Check(val) &&
-                   ( PyTuple_Size(val) == 1 || PyTuple_Size(val) == 4 ) )   ) {
-              PyErr_SetString(PyExc_RuntimeError,
-                              "addr must be 1-tuple or 4-tuple");
+          if ( ! checkAddrTuple(val) )
               return 0;
-          }
 
           BroAddr* addr = (BroAddr*)malloc(sizeof(BroAddr));
-          int i = PyTuple_Size(val);
-          if ( i == 1 )
-              {
-              memcpy(addr->addr, BRO_IPV4_MAPPED_PREFIX,
-                     sizeof(BRO_IPV4_MAPPED_PREFIX));
-              addr->addr[3] = PyInt_AsLong(PyTuple_GetItem(val, 0));
-              }
-          else
-              for ( i = 0; i < 4; ++i )
-                  addr->addr[i] = PyInt_AsLong(PyTuple_GetItem(val, i));
-
+          parseAddrTuple(val, addr);
           *data = addr;
           break;
       }
@@ -279,25 +311,12 @@ int pyObjToVal(PyObject *val, int type, const char **type_name, void** data)
               return 0;
           }
           PyObject* addr = PyTuple_GetItem(val, 0);
-          if ( ! ( PyTuple_Check(addr) &&
-                   ( PyTuple_Size(addr) == 1 || PyTuple_Size(addr) == 4 ) ) ) {
-              PyErr_SetString(PyExc_RuntimeError,
-                              "subnet's addr must be 1-tuple or 4-tuple");
+          if ( ! checkAddrTuple(addr) )
               return 0;
-          }
 
           BroSubnet* subnet = (BroSubnet *)malloc(sizeof(BroSubnet));
-          int i = PyTuple_Size(addr);
-          if ( i == 1 )
-              {
-              memcpy(subnet->sn_net.addr, BRO_IPV4_MAPPED_PREFIX,
-                     sizeof(BRO_IPV4_MAPPED_PREFIX));
-              subnet->sn_net.addr[3] = PyInt_AsLong(PyTuple_GetItem(addr, 0));
-              }
-          else
-              for ( i = 0; i < 4; ++i )
-                  subnet->sn_net.addr[i] =
-                      PyInt_AsLong(PyTuple_GetItem(addr, i));
+
+          parseAddrTuple(addr, &subnet->sn_net);
 
           subnet->sn_width = PyInt_AsLong(PyTuple_GetItem(val, 1));
           *data = subnet;
@@ -386,7 +405,6 @@ void event_callback(BroConn *bc, void *data, BroEvMeta *meta)
 
 //bro_debug_messages = 1;
 //bro_debug_calltrace = 1;
-
 
     if ( ! parseTypeTuple($input, &type, &val) )
         return NULL;

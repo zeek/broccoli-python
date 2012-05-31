@@ -1,4 +1,20 @@
 
+0.52-14 | 2012-05-31 14:25:43 -0700
+
+  * Fix overflow problems in converting Python IP addresses to
+    Broccoli. (Jon Siwek)
+
+  * Update bindings to work with Broccoli's IPv4-mapped BroAddrs. (Jon
+    Siwek)
+
+  * Update IPv6 literal syntax in test scripts. (Jon Siwek)
+    
+  * Update broccoli-python for IPv6 addr/subnet support. Addresses
+    #448. (Jon Siwek)
+
+  * Raise minimum required CMake version to 2.6.3. (Jon Siwek)
+    
+
 0.52 | 2012-01-10 16:56:13 -0800
 
   * Submodule README conformity changes (Jon Siwek)
