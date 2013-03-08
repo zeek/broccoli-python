@@ -20,11 +20,11 @@ Download
 --------
 
 You can find the latest Broccoli-Python release for download at
-http://www.bro-ids.org/download.
+http://www.bro.org/download.
 
-Broccoli-Python's git repository is located at `git://git.bro-ids.org/broccoli-python.git
-<git://git.bro-ids.org/broccoli-python.git>`__. You can browse the repository
-`here <http://git.bro-ids.org/broccoli-python.git>`__.
+Broccoli-Python's git repository is located at `git://git.bro.org/broccoli-python.git
+<git://git.bro.org/broccoli-python.git>`__. You can browse the repository
+`here <http://git.bro.org/broccoli-python.git>`__.
 
 This document describes Broccoli-Python |version|. See the ``CHANGES``
 file for version history.
@@ -219,7 +219,7 @@ Examples
 
 There are some example scripts in the ``tests/`` subdirectory of the
 ``broccoli-python`` repository
-`here <http://git.bro-ids.org/broccoli-python.git/tree/HEAD:/tests>`_:
+`here <http://git.bro.org/broccoli-python.git/tree/HEAD:/tests>`_:
 
    - ``broping.py`` is a (simplified) Python version of Broccoli's test program
      ``broping``. Start Bro with ``broping.bro``.

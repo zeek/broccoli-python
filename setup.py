@@ -7,7 +7,7 @@ from distutils.core import setup, Extension
 
 setup(name="broccoli-python", 
     version="0.54", # Filled in automatically.
-    author_email="info@bro-ids.org",
+    author_email="info@bro.org",
     license="BSD",
     py_modules=['broccoli'],
     ext_modules = [ 
