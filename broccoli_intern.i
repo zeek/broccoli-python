@@ -262,12 +262,13 @@ int pyObjToVal(PyObject *val, int type, const char **type_name, void** data)
       }
 
       case BRO_TYPE_STRING: {
-          BroString* str = (BroString *)malloc(sizeof(BroString));
+          BroString* str = 0;
 
           const char* tmp = PyString_AsString(val);
           if ( ! tmp )
               return 0;
 
+          str = (BroString *)malloc(sizeof(BroString));
           str->str_len = strlen(tmp);
           str->str_val = (uchar*)strdup(tmp);
           *data = str;
@@ -335,12 +336,18 @@ int pyObjToVal(PyObject *val, int type, const char **type_name, void** data)
               int ftype;
               PyObject *fval;
               if ( ! parseTypeTuple(valueTuple, &ftype, &fval) )
+                  {
+                  bro_record_free(rec);
                   return 0;
+                  }
 
               const char *ftype_name;
               void *fdata;
               if ( ! pyObjToVal(fval, ftype, &ftype_name, &fdata) )
+                  {
+                  bro_record_free(rec);
                   return 0;
+                  }
 
               bro_record_add_val(rec, fieldName, ftype, 0, fdata);
               freeBroccoliVal(ftype, fdata);
