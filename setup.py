@@ -6,7 +6,7 @@ import sys
 from distutils.core import setup, Extension
 
 setup(name="broccoli-python", 
-    version="0.55", # Filled in automatically.
+    version="0.55-2", # Filled in automatically.
     author_email="info@bro.org",
     license="BSD",
     py_modules=['broccoli'],
