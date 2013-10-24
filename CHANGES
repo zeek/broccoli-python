@@ -1,4 +1,8 @@
 
+0.56 | 2013-10-14 09:24:55 -0700
+
+  * Updating copyright notice. (Robin Sommer)
+
 0.55-2 | 2013-10-02 10:34:29 -0700
 
   * Fix mem leaks. (Jon Siwek)
