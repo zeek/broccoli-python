@@ -33,10 +33,10 @@ file for version history.
 Installation
 ------------
 
-Installation of the Python module is pretty straight-forward. After
-Broccoli itself has been installed, it follows the standard installation
-process for Python modules::
+Installation of the Python module is pretty straight-forward::
 
+    ./configure
+    make
     python setup.py install
 
 Try the following to test the installation. If you do not see any
