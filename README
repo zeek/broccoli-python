@@ -1,7 +1,7 @@
 ..	-*- mode: rst-mode -*-
 ..
 .. Version number is filled in automatically.
-.. |version| replace:: 0.56
+.. |version| replace:: 0.57
 
 ============================
 Python Bindings for Broccoli
@@ -33,10 +33,10 @@ file for version history.
 Installation
 ------------
 
-Installation of the Python module is pretty straight-forward. After
-Broccoli itself has been installed, it follows the standard installation
-process for Python modules::
+Installation of the Python module is pretty straight-forward::
 
+    ./configure
+    make
     python setup.py install
 
 Try the following to test the installation. If you do not see any
