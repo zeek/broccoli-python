@@ -499,4 +499,7 @@ int            bro_event_send(BroConn *bc, BroEvent *be);
 void           bro_event_registry_add_compact(BroConn *bc, const char *event_name, BroCompactEventFunc func, void *user_data);
 double         bro_util_current_time(void);
 int            bro_conn_get_fd(BroConn *bc);
+int            bro_conn_delete(BroConn *bc);
+int            bro_conn_alive(BroConn *bc);
+
 

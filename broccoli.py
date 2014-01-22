@@ -35,6 +35,14 @@ class Connection:
         bro_conn_process_input(self.bc);
         return bro_event_queue_length(self.bc) > 0
 
+    def connAlive(self):
+        if bro_conn_alive(self.bc) == 1:
+            return True
+        return False
+
+    def connDelete(self):
+        return bro_conn_delete(self.bc)
+        
     # Send an event of name with args.
     def send(self, name, *args):
         ev = bro_event_new(name)
