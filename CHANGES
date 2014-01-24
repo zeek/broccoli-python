@@ -1,4 +1,8 @@
 
+0.57-3 | 2014-01-23 16:59:19 -0800
+
+  * Supply connAlive() and connDelete() methods. (jpohlmann)
+
 0.57 | 2013-11-06 00:21:37 -0800
 
   * Installation section was missing necessary steps. (Bernhard Amann)

@@ -35,6 +35,14 @@ class Connection:
         bro_conn_process_input(self.bc);
         return bro_event_queue_length(self.bc) > 0
 
+    def connAlive(self):
+        if bro_conn_alive(self.bc) == 1:
+            return True
+        return False
+
+    def connDelete(self):
+        return bro_conn_delete(self.bc)
+
     # Send an event of name with args.
     def send(self, name, *args):
         ev = bro_event_new(name)
@@ -74,30 +82,30 @@ def event(*types):
 
         def wrapped_f(*args):
             new_args = []
-            
+
             ptypes = types
             if not ptypes:
                 # Allow omitting types.
                 ptypes =  [None] *len(args)
-                
+
             for (arg, type) in zip(args, ptypes):
                 # Split the 2-tuples passed to us by the C layer.
                 (btype, val) = arg
                 # Create an instance of the corresponding Python type.
                 new_args += [instantiate(btype, val, type)]
-                
+
             # Finally call the callback.
             return func(*new_args);
-            
+
         # Pretend the wrapper has the name of the actual callback (rather than "wrapped_f" ...)
         wrapped_f.func_name = func.func_name
-        
+
         # Add the wrapped function to the list of events handlers.
         global _Events
         _Events += [wrapped_f]
-        
+
         return wrapped_f
-        
+
     # Allow @event instead of @event()
     if len(types) == 1 and type(types[0]) == FunctionType:
         func = types[0]
