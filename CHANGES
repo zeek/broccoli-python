@@ -1,4 +1,8 @@
 
+0.58 | 2014-04-03 15:53:50 -0700
+
+  * Release 0.58
+
 0.57-3 | 2014-01-23 16:59:19 -0800
 
   * Supply connAlive() and connDelete() methods. (jpohlmann)
