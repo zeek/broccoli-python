@@ -1,4 +1,9 @@
 
+0.58-1 | 2014-07-08 09:56:42 -0700
+
+  * Fix setup.py to work with path changes. Addresses BIT-1213.
+    (Nicholas Weaver)
+
 0.58 | 2014-04-03 15:53:50 -0700
 
   * Release 0.58
