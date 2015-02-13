@@ -3,7 +3,7 @@ import socket
 import struct
 from types import FunctionType
 
-from _broccoli_intern import *
+from broccoli_intern import *
 
 bro_init(None)
 

@@ -1,4 +1,9 @@
 
+0.58-8 | 2015-02-13 16:02:49 -0600
+
+  * In broccoli.py, import from broccoli_intern not _broccoli_intern.
+    (Jon Siwek)
+
 0.58-1 | 2014-07-08 09:56:42 -0700
 
   * Fix setup.py to work with path changes. Addresses BIT-1213.
