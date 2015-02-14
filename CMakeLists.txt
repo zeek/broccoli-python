@@ -52,6 +52,8 @@ install(FILES broccoli.py
         DESTINATION ${PY_MOD_INSTALL_DIR})
 install(TARGETS ${SWIG_MODULE_broccoli_intern_REAL_NAME}
         DESTINATION ${PY_MOD_INSTALL_DIR})
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/broccoli_intern.py
+        DESTINATION ${PY_MOD_INSTALL_DIR})
 
 ########################################################################
 ## Build Summary

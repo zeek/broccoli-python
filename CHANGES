@@ -1,4 +1,8 @@
 
+0.58-9 | 2015-02-13 18:01:05 -0600
+
+  * Install broccoli_intern.py (Jon Siwek)
+
 0.58-8 | 2015-02-13 16:02:49 -0600
 
   * In broccoli.py, import from broccoli_intern not _broccoli_intern.
