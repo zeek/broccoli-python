@@ -10,8 +10,8 @@ pong_data = record_type("seq", "src_time", "dst_time")
 
 @event(pong_data)
 def pong(data):
-    print "pong event: seq=%i, time=%f/%f s" % (data.seq, 
-        data.dst_time - data.src_time, current_time() - data.src_time)
+    print("pong event: seq=%i, time=%f/%f s" % (data.seq,
+        data.dst_time - data.src_time, current_time() - data.src_time))
 
 bc = Connection("127.0.0.1:47758")
 
