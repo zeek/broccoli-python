@@ -77,13 +77,21 @@ void parseAddrTuple(PyObject* o, BroAddr* a)
         {
         memcpy(a->addr, BRO_IPV4_MAPPED_PREFIX, sizeof(BRO_IPV4_MAPPED_PREFIX));
         PyObject* it = PyTuple_GetItem(o, 0);
+#if PY_MAJOR_VERSION >= 3
+        a->addr[3] = PyLong_AsUnsignedLongMask(it);
+#else
         a->addr[3] = PyInt_AsUnsignedLongMask(it);
+#endif
         }
     else
         for ( i = 0; i < 4; ++i )
             {
             PyObject* it = PyTuple_GetItem(o, i);
+#if PY_MAJOR_VERSION >= 3
+            a->addr[i] = PyLong_AsUnsignedLongMask(it);
+#else
             a->addr[i] = PyInt_AsUnsignedLongMask(it);
+#endif
             }
     }
 
@@ -168,7 +176,11 @@ PyObject* valToPyObj(int type, void* data)
 
       case BRO_TYPE_STRING: {
           BroString *str = (BroString*)data;
+#if PY_MAJOR_VERSION >= 3
+          val = PyUnicode_FromStringAndSize((const char*)str->str_val, str->str_len);
+#else
           val = PyString_FromStringAndSize((const char*)str->str_val, str->str_len);
+#endif
           break;
       }
 
@@ -264,7 +276,11 @@ int pyObjToVal(PyObject *val, int type, const char **type_name, void** data)
       case BRO_TYPE_STRING: {
           BroString* str = 0;
 
+#if PY_MAJOR_VERSION >= 3
+          const char* tmp = PyUnicode_AsUTF8(val);
+#else
           const char* tmp = PyString_AsString(val);
+#endif
           if ( ! tmp )
               return 0;
 
@@ -330,7 +346,11 @@ int pyObjToVal(PyObject *val, int type, const char **type_name, void** data)
           for ( i = 0; i < PyList_Size(val); i++ ) {
               PyObject *nameAndValueTuple = PyList_GetItem(val, i);
               const char* fieldName =
+#if PY_MAJOR_VERSION >= 3
+                  PyUnicode_AsUTF8(PyTuple_GetItem(nameAndValueTuple, 0));
+#else
                   PyString_AsString(PyTuple_GetItem(nameAndValueTuple, 0));
+#endif
               PyObject *valueTuple = PyTuple_GetItem(nameAndValueTuple, 1);
 
               int ftype;

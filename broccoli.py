@@ -1,9 +1,14 @@
-
+import sys
 import socket
 import struct
 from types import FunctionType
 
 from broccoli_intern import *
+
+if sys.version_info[0] == 3:
+    using_py3 = True
+else:
+    using_py3 = False
 
 bro_init(None)
 
@@ -98,7 +103,7 @@ def event(*types):
             return func(*new_args);
 
         # Pretend the wrapper has the name of the actual callback (rather than "wrapped_f" ...)
-        wrapped_f.func_name = func.func_name
+        wrapped_f.__name__ = func.__name__
 
         # Add the wrapped function to the list of events handlers.
         global _Events
@@ -381,7 +386,10 @@ def _getInternalVal(arg):
 
 # Factories for Python internal types.
 def _long_factory(val, dst_type):
-    return long(val)
+    if using_py3:
+        return int(val)
+    else:
+        return long(val)
 
 def _bool_factory(val, dst_type):
     return bool(val)

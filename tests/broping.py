@@ -7,8 +7,8 @@ from broccoli import *
 
 @event
 def pong(src_time, dst_time, seq):
-    print "pong event: seq=%i, time=%f/%f s" % (seq, 
-        dst_time - src_time, current_time() - src_time)
+    print("pong event: seq=%i, time=%f/%f s" % (seq,
+        dst_time - src_time, current_time() - src_time))
              
 bc = Connection("127.0.0.1:47758")
 

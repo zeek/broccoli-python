@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+from __future__ import print_function
 import time as Time
 
 from broccoli import *
@@ -12,19 +13,19 @@ from broccoli import *
 def test2(a,b,c,d,e,f,g,h,i,j,i6,j6):
     global recv
     recv += 1
-    print "==== atomic a %d ====" % recv
-    print repr(a), a
-    print repr(b), b
-    print "%.4f" % c
-    print d
-    print repr(e), e
-    print f
-    print repr(g), g
-    print repr(h), h
-    print repr(i), i
-    print repr(j), j
-    print repr(i6), i6
-    print repr(j6), j6
+    print("==== atomic a %d ====" % recv)
+    print(repr(a), a)
+    print(repr(b), b)
+    print("%.4f" % c)
+    print(d)
+    print(repr(e), e)
+    print(f)
+    print(repr(g), g)
+    print(repr(h), h)
+    print(repr(i), i)
+    print(repr(j), j)
+    print(repr(i6), i6)
+    print(repr(j6), j6)
 
 # Same as test2 except with typing this time.
 # For floating point types that are wrapped in a class, we do want to print
@@ -32,19 +33,19 @@ def test2(a,b,c,d,e,f,g,h,i,j,i6,j6):
 # normalized to a constant precision.
 @event(int,count,time,interval,bool,double,addr,port,addr,subnet,addr,subnet)
 def test2b(a,b,c,d,e,f,g,h,i,j,i6,j6):
-    print "==== atomic b %d ====" % recv
-    print repr(a), a
-    print repr(b), b
-    print repr(c), "%.4f" % c.val
-    print repr(d), d
-    print repr(e), e
-    print f
-    print repr(g), g
-    print repr(h), h
-    print repr(i), i
-    print repr(j), j
-    print repr(i6), i6
-    print repr(j6), j6
+    print("==== atomic b %d ====" % recv)
+    print(repr(a), a)
+    print(repr(b), b)
+    print(repr(c), "%.4f" % c.val)
+    print(repr(d), d)
+    print(repr(e), e)
+    print(f)
+    print(repr(g), g)
+    print(repr(h), h)
+    print(repr(i), i)
+    print(repr(j), j)
+    print(repr(i6), i6)
+    print(repr(j6), j6)
 
 rec = record_type("a", "b")
 other_rec = record_type("a")
@@ -53,10 +54,10 @@ other_rec = record_type("a")
 def test4(r):
     global recv
     recv += 1
-    print "==== record %d ====" % recv
-    print repr(r)
-    print repr(r.a), r.a
-    print repr(r.b), r.b
+    print("==== record %d ====" % recv)
+    print(repr(r))
+    print(repr(r.a), r.a)
+    print(repr(r.b), r.b)
 
 bc = Connection("127.0.0.1:47758")
 
