@@ -35,7 +35,14 @@ include_directories(BEFORE ${Broccoli_INCLUDE_DIR})
 
 include(UseSWIG)
 
-swig_add_module(broccoli_intern python broccoli_intern.i)
+if ( CMAKE_VERSION VERSION_LESS 3.8.0 )
+    swig_add_module(broccoli_intern python broccoli_intern.i)
+else ()
+    swig_add_library(broccoli_intern
+                     LANGUAGE python
+                     SOURCES broccoli_intern.i)
+endif ()
+
 swig_link_libraries(broccoli_intern ${Broccoli_LIBRARY} ${PYTHON_LIBRARIES})
 set_source_files_properties(${swig_generated_file_fullname} PROPERTIES
                             COMPILE_FLAGS -fno-strict-aliasing)
